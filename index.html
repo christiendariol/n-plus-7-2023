@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>N+7</title>
+
+    <meta name="description" content="A simple exercise template." />
+    <!-- styles -->
+    <style></style>
+  </head>
+  <body>
+    <h1>N+7</h1>
+    <h2>Source text</h2>
+    <p id="sourceText"></p>
+    <h2>New text</h2>
+    <p id="newText"></p>
+    <!-- script -->
+    <script>
+      let nouns;
+      const sourceText = `A twist of fate has left asylum seekers who have travelled to Australia on the same boat facing utterly different futures.
+
+Key points:
+
+Hundreds have rallied outside Parliament House against what they say is an inconsistent approach to refugee visas
+The federal government recently announced 19,000 temporary visa holders would be eligible to apply for permanent visas
+The government says anyone who arrives illegally by boat will have no chance of permanent settlement
+It is a familiar story for those on bridging visas. The passenger sitting next to them on a crowded boat bound for Australia now has a pathway to permanent residency while they have to apply for a new visa every six months .`;
+      const wordOffset = 7;
+      function generateNewText(text) {
+        let splitText = text.split(" ");
+        let newText = "";
+        for (const word of splitText) {
+          let indexInList = nouns.indexOf(word);
+          let newWord;
+          if (indexInList > -1) {
+            if (nouns[indexInList + wordOffset]) {
+              newWord = nouns[indexInList + wordOffset];
+            }
+          } else {
+            newWord = word;
+          }
+          if (newText === "") {
+            newText = newWord;
+          } else {
+            newText = newText + " " + newWord;
+          }
+        }
+        return newText;
+      }
+      function initPoem(nounList) {
+        nouns = nounList.split(/\r?\n/);
+        newText = generateNewText(sourceText);
+        document.getElementById("sourceText").innerHTML = sourceText;
+        document.getElementById("newText").innerHTML = newText;
+      }
+      fetch("nounlist.txt")
+        .then((response) => response.text())
+        .then((textContent) => initPoem(textContent));
+    </script>
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div
+      class="glitchButton"
+      style="position: fixed; top: 20px; right: 20px"
+    ></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
+  </body>
+</html>
